@@ -1,7 +1,7 @@
-# Detecting Dust Storms using Sentinel-5P UV Aerosol Index
+## Detecting Dust Storms using Sentinel-5P UV Aerosol Index
 
 
-## 1. Introduction
+### 1. Introduction
 
 Dust storms are significant meteorological events that can impact air quality, human health, transportation, and climate. Monitoring and detecting these events are crucial for early warning and impact assessment.
 
@@ -13,20 +13,20 @@ This Colab notebook demonstrates how to:
 * Analyze the AI time series to identify potential dust events based on different AI thresholds.
 * Visualize the data through time series plots with event highlighting, histograms, and seasonal/monthly boxplots.
 
-## 2. Setup
+### 2. Setup
 
-### 2.1 Install Necessary Libraries
+#### 2.1 Install Necessary Libraries
 First, we need to install the required Python libraries. If you are running this in a new Colab environment, execute the following cell: 
 ```openeo xarray matplotlib pandas seaborn netcdf4 h5netcdf```
-### 2.2 Authenticate with openEO (Copernicus Data Space Ecosystem)
+#### 2.2 Authenticate with openEO (Copernicus Data Space Ecosystem)
 To access Sentinel-5P data via openEO, you need an account on the Copernicus Data Space Ecosystem.
 When you run the ```openeo.connect(...).authenticate_oidc()``` command for the first time, it will typically guide you through an authentication process in your browser.
 
-## 3. Understanding the Script
+### 3. Understanding the Script
 
 The Python script is divided into several logical sections:
 
-### 3.1 Configuration (Section A)
+#### 3.1 Configuration (Section A)
 This is where you set the main parameters for your analysis:
 * **`cities_coordinates`**: A Python dictionary defining the cities you want to analyze (currently Omani cities) along with their longitude and latitude.
     ```python
@@ -38,7 +38,7 @@ This is where you set the main parameters for your analysis:
 * **`dust_event_thresholds_list`**: A list of Aerosol Index (AI) values. The script will report how many days exceed each of these thresholds. These are also plotted as reference lines on histograms and boxplots.
 * **`threshold_yellow_min`, `threshold_orange_min`, `threshold_red_min`**: These AI values define the ranges for color-coding events on the timeseries plot (yellow for AI > 1.0 to ≤ 1.5, orange for AI > 1.5 to ≤ 2.0, and red for AI > 2.0), providing a visual guide to event intensity.
 
-### 3.2 Data Acquisition (Section B) 
+#### 3.2 Data Acquisition (Section B) 
 This section handles fetching the data:
 * It connects to the Copernicus Data Space Ecosystem using the `openeo` library.
 * A data cube (`dataset`) is defined for Sentinel-5P Level 2 data, filtered by your chosen time period, a geographical area around each city (defined by `buffer_degrees`), and the specific AI band.
@@ -46,13 +46,13 @@ This section handles fetching the data:
 * **`aggregate_spatial(reducer="mean", geometries=...)`**: This further averages the daily AI values over the precise point geometry defined for each city, resulting in a single AI value per day for each city.
 * **`execute_batch(...)`**: This command sends the entire processing chain (data loading, filtering, and aggregation) as a job to the openEO backend. The backend performs the computation, and the script then downloads the resulting data as a NetCDF file. **Note:** This step can take several minutes for each city, depending on the data volume and backend load.
 
-### 3.3 Data Processing (Section C) 
+#### 3.3 Data Processing (Section C) 
 Once the data is downloaded for a city:
 * The NetCDF file (`.nc`) is loaded using the `xarray` library.
 * The script intelligently tries to identify the time coordinate and the AI data variable within the file.
 * The relevant data is then converted into a `pandas` DataFrame, which is a convenient format for time series analysis and plotting with `matplotlib` and `seaborn`.
 
-### 3.4 Plotting and Analysis (Sections D-G) 
+#### 3.4 Plotting and Analysis (Sections D-G) 
 For each city, the script generates and saves several analytical plots:
 * **Timeseries Plot (Intensity Highlighted)**:
     * Displays daily AI values (grey dots) and a 7-day rolling mean (blue line).
@@ -70,7 +70,7 @@ For each city, the script generates and saves several analytical plots:
     * Similar to the seasonal plot, but breaks down the AI distribution by month, offering a more granular view of temporal patterns.
 
 
-## 4. Interpreting the Results 
+### 4. Interpreting the Results 
 
 * **Timeseries Plot**:
     * **Grey dots**: Represent the raw daily AI values.
@@ -90,7 +90,7 @@ For each city, the script generates and saves several analytical plots:
     * These plots are excellent for identifying which seasons or months consistently show higher AI values (indicating more frequent or intense dust/aerosol activity) or greater variability. The horizontal reference lines for the statistical thresholds add further context.
 
 
-## 5. Outputs 
+### 5. Outputs 
 
 For each city processed, the script will save the following files into your Google Colab environment's current working directory:
 
@@ -104,7 +104,7 @@ For each city processed, the script will save the following files into your Goog
 You can download these files from the file browser panel on the left side of the Colab interface.
 
 
-## 6. Further Exploration and Considerations 
+### 6. Further Exploration and Considerations 
 
 * **Validation**: Remember, the Aerosol Index is an *indicator*. For definitive dust storm confirmation and impact assessment, it's highly recommended to correlate high AI events with other data sources:
     * Ground-based PM₂.₅ or PM₁₀ measurements from air quality monitoring stations.
@@ -122,6 +122,6 @@ You can download these files from the file browser panel on the left side of the
     * Explore other Sentinel-5P products (like NO₂, SO₂, CO) or different openEO collections if relevant to your research.
 
 
-## 7. Conclusion 
+### 7. Conclusion 
 
 The Sentinel-5P UV Aerosol Index provides a powerful, freely accessible dataset for monitoring and detecting the presence of UV-absorbing aerosols, including desert dust. By leveraging `openEO` for efficient data access and Python for robust analysis and visualization (as demonstrated in this notebook), researchers, air quality forecasters, and public health officials can gain valuable insights into the frequency, intensity, and seasonality of dust events over specific regions. While AI is a strong indicator, always consider integrating complementary data sources for a comprehensive understanding of these complex atmospheric phenomena.
