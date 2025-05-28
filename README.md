@@ -19,7 +19,7 @@ This Colab notebook demonstrates how to:
 First, we need to install the required Python libraries. If you are running this in a new Colab environment, execute the following cell: 
 ```openeo xarray matplotlib pandas seaborn netcdf4 h5netcdf```
 #### 2.2 Authenticate with openEO (Copernicus Data Space Ecosystem)
-To access Sentinel-5P data via openEO, you need an account on the Copernicus Data Space Ecosystem.
+To access Sentinel-5P data via openEO, you need an account on the [Copernicus Data Space Ecosystem](https://dataspace.copernicus.eu/).
 When you run the ```openeo.connect(...).authenticate_oidc()``` command for the first time, it will typically guide you through an authentication process in your browser.
 
 ### 3. Understanding the Script
